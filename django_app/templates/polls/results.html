@@ -16,18 +16,14 @@
         {% endfor %}
     {% endif %}
 
-    <form action="{% url 'polls:vote' question.id %}" method="post">
-        {% csrf_token %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio"
-                   name="choice"
-                   id="choice{{ forloop.counter }}"
-                   value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">
-                {{ choice.choice_text }}
-            </label>
-        {% endfor %}
-        <input type="submit" value="vote">
-    </form>
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <ul>
+            {{ choice.choice_text }} : {{ choice.votes}}번
+        </ul>
+    {% endfor %}
+
+    <a href="{% url 'polls:detail' question_id=question.pk %}">뒤로가기</a>
+
 </body>
 </html>
