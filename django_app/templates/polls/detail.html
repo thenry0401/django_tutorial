@@ -1,33 +1,27 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>{{ question.question_text }}</h1>
+{% extends 'polls/base.html' %}
 
-    {% if error_message %}
-        {% for message in messages %}
-            <p><strong>{{ message }}</strong></p>
-        {% endfor %}
-    {% endif %}
+{% block content %}
+<h1>{{ question.question_text }}</h1>
 
-    <form action="{% url 'polls:vote' question.id %}" method="post">
-        {% csrf_token %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio"
-                   name="choice"
-                   id="choice{{ forloop.counter }}"
-                   value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">
-                {{ choice.choice_text }}
-            </label>
-        {% endfor %}
-        <input type="submit" value="vote">
-    </form>
-</body>
-</html>
+{% if error_message %}
+    {% for message in messages %}
+        <p><strong>{{ message }}</strong></p>
+    {% endfor %}
+{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio"
+               name="choice"
+               id="choice{{ forloop.counter }}"
+               value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">
+            {{ choice.choice_text }}
+        </label>
+    {% endfor %}
+    <input type="submit" value="vote">
+</form>
+
+<a href="{% url 'polls:index' %}">뒤로가기</a>
+{% endblock %}
